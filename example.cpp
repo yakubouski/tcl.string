@@ -5,22 +5,7 @@
 
 
 decltype(auto) fast_hash(const char* from,const char* to) {
-	static constexpr uint64_t seed = 0xc6a4a7935bd1e995;
-	uint64_t hash = seed;
-	const uint64_t* p_it = (const uint64_t*)from, * a_to = (const uint64_t*)to;
-	for (; (p_it + 1) <= a_to; p_it++) {
-		hash ^= *p_it;
-	}
-	if ((a_to - p_it)) {
-		auto rsh = ((uint64_t)a_to - (uint64_t)p_it);
-		auto mask = (~(0xFFFFFFFFFFFFFFFF << (rsh << 3)));
-		hash = hash ^ (*p_it & (~(0xFFFFFFFFFFFFFFFF << (rsh << 3))));
-	}
-#if __x86_64__
-	return hash;
-#else
-	return (uint32_t)hash ^ (uint32_t)(hash >> 32);
-#endif
+	
 	
 }
 

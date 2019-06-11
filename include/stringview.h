@@ -140,17 +140,30 @@ public:
 		}
 	}
 
-	forceinline decltype(auto) begin() { return _begin; }
-	forceinline decltype(auto) end() { return _end; }
+	forceinline decltype(auto) begin() const { return _begin; }
+	forceinline decltype(auto) end() const { return _end; }
 
-	forceinline std::string str() { if (_begin < _end) return { _begin,_end }; return {}; }
+	forceinline std::string str() const { if (_begin < _end) return { _begin,_end }; return {}; }
 };
 namespace std {
 	template <> 
 	struct hash<cstringview>
 	{
 		inline size_t operator()(const cstringview& v) const {
-			;
+			/* unsafe fast hash implementation */
+			uint64_t hash = 0xc6a4a7935bd1e995;
+			const uint64_t* p_it = (const uint64_t*)v.begin(), * a_to = (const uint64_t*)v.end();
+			for (; (p_it + 1) <= a_to; hash ^= (*p_it), ++p_it) { ; }
+			if ((a_to - p_it)) {
+				auto rsh = ((uint64_t)a_to - (uint64_t)p_it);
+				auto mask = (~(0xFFFFFFFFFFFFFFFF << (rsh << 3)));
+				hash = hash ^ (*p_it & (~(0xFFFFFFFFFFFFFFFF << (rsh << 3))));
+			}
+#if __x86_64__
+			return hash;
+#else
+			return (uint32_t)hash ^ (uint32_t)(hash >> 32);
+#endif
 		}
 	};
 
@@ -159,7 +172,9 @@ namespace std {
 	{
 		inline bool operator()(const cstringview& a, const cstringview& b) const {
 			if (a.size() == b.size()) {
-
+				size_t length = a.size();
+				for (const uint8_t* a_it = a.begin(), *b_it = b.begin(); length && ccharset::icase_compare(*a_it, *b_it); --length) { ; }
+				return length == 0;
 			}
 			return false; 
 		}
