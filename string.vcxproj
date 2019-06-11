@@ -79,10 +79,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\pch.h" />
-    <ClInclude Include="include\tchars.h" />
-    <ClInclude Include="include\tstringoption.h" />
-    <ClInclude Include="include\tstringview.h" />
-    <ClInclude Include="include\tstringutils.h" />
+    <ClInclude Include="include\stringchars.h" />
+    <ClInclude Include="include\stringoption.h" />
+    <ClInclude Include="include\stringview.h" />
+    <ClInclude Include="include\stringutils.h" />
   </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
