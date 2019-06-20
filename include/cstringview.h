@@ -2,7 +2,7 @@
 #include <cinttypes>
 #include <string>
 #include "pch.h"
-#include "stringchars.h"
+#include "cstringchars.h"
 
 class cstringview {
 	using tp = uint8_t;
@@ -145,6 +145,7 @@ public:
 
 	forceinline std::string str() const { if (_begin < _end) return { _begin,_end }; return {}; }
 };
+
 namespace std {
 	template <> 
 	struct hash<cstringview>

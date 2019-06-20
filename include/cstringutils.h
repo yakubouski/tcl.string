@@ -7,7 +7,7 @@
 #include <climits>
 #include <algorithm> 
 #include <cstdarg>
-#include "cstringchars.h"
+#include "stringchars.h"
 #include "pch.h"
 
 namespace cstringutils {

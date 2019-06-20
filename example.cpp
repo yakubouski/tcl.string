@@ -1,37 +1,15 @@
 #include <cstdio>
-#include "include/stringutils.h"
-#include "include/stringoption.h"
-#include "include/stringview.h"
+#include "include/cstringutils.h"
+#include "include/cstringoption.h"
+#include "include/cstringview.h"
 
 
-decltype(auto) fast_hash(const char* from,const char* to) {
-	
-	
-}
 
 int main()
 {
-	{
-		const char* str[] = {
-			"a",
-			"ab",
-			"abcd",
-			"abcdef",
-			"abcdefgj",
-			"abcdefgjkl",
-			"abcdefgjkl12345",
-			"abcdefgjkl123456",
-			"abcdefgjkl123456789", };
-
-		for (size_t s = 0; s < 9; s++)
-		{
-			printf("hash: %20s (%2zd) = %16zx\n", str[s], strlen(str[s]), fast_hash(str[s], str[s] + strlen(str[s])));
-		}
-	}
-
 	/* expand option string,sequence will be generate  */
 	{
-		auto res = coption::sequence("eth1,	eth5 , eth4 - eth8, bond1.10- bond1.14, ifs9-,ifs77-ifs77, eno19-eno15");
+		auto res = cstringoption::sequence("eth1,	eth5 , eth4 - eth8, bond1.10- bond1.14, ifs9-,ifs77-ifs77, eno19-eno15");
 		printf("Network interfaces: ");
 		for (auto& ifs : res) {
 			printf("%s, ", ifs.c_str());
@@ -43,14 +21,14 @@ int main()
 	}
 
 	{
-		auto bytes = coption::bytes(" 12 K");
+		auto bytes = cstringoption::bytes(" 12 K");
 
 		printf("Capacity: %zu bytes\n", bytes);
 		// Capacity: 12288 bytes
 	}
 
 	{
-		auto secs = coption::seconds(" 3h 15m 11");
+		auto secs = cstringoption::seconds(" 3h 15m 11");
 
 		printf("Time: %zu seconds\n", secs);
 		// Time: 11711 seconds
@@ -71,7 +49,7 @@ int main()
 		{
 			std::string proto, user, password, host, port, path, filename;
 			std::unordered_map<std::string, std::string> options;
-			auto result = coption::dsn(str[s], std::move(proto), std::move(user), std::move(password), std::move(host), std::move(port), std::move(path), std::move(filename), std::move(options));
+			auto result = cstringoption::dsn(str[s], std::move(proto), std::move(user), std::move(password), std::move(host), std::move(port), std::move(path), std::move(filename), std::move(options));
 			printf("Proto (%s), User (%s), Password (%s), Host (%s), Port (%s), Path (%s), FileName (%s), Options ( ",
 				proto.c_str(),user.c_str(),password.c_str(),host.c_str(),port.c_str(),
 				path.c_str(),filename.c_str());
